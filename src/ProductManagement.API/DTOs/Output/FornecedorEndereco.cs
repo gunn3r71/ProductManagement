@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace ProductManagement.API.DTOs.Output
 {
-    public class FornecedorOutput
+    public class FornecedorEndereco
     {
         public Guid Id { get; set; }
         public string Nome { get; set; }
@@ -11,6 +10,5 @@ namespace ProductManagement.API.DTOs.Output
         public string TipoFornecedor { get; set; }
         public bool Ativo { get; set; }
         public EnderecoOutput Endereco { get; set; }
-        public IEnumerable<ProdutoOutput> Produtos { get; set; }
     }
 }
