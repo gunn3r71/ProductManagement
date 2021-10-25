@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProductManagement.Data.Context;
 
-namespace CRUD.Data.Migrations
+namespace ProductManagement.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -19,7 +19,7 @@ namespace CRUD.Data.Migrations
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("CRUD.Business.Models.Endereco", b =>
+            modelBuilder.Entity("ProductManagement.Business.Models.Endereco", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -72,7 +72,7 @@ namespace CRUD.Data.Migrations
                     b.ToTable("Enderecos");
                 });
 
-            modelBuilder.Entity("CRUD.Business.Models.Fornecedor", b =>
+            modelBuilder.Entity("ProductManagement.Business.Models.Fornecedor", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -103,7 +103,7 @@ namespace CRUD.Data.Migrations
                     b.ToTable("Fornecedores");
                 });
 
-            modelBuilder.Entity("CRUD.Business.Models.Produto", b =>
+            modelBuilder.Entity("ProductManagement.Business.Models.Produto", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -144,19 +144,19 @@ namespace CRUD.Data.Migrations
                     b.ToTable("Produtos");
                 });
 
-            modelBuilder.Entity("CRUD.Business.Models.Endereco", b =>
+            modelBuilder.Entity("ProductManagement.Business.Models.Endereco", b =>
                 {
-                    b.HasOne("CRUD.Business.Models.Fornecedor", "Fornecedor")
+                    b.HasOne("ProductManagement.Business.Models.Fornecedor", "Fornecedor")
                         .WithOne("Endereco")
-                        .HasForeignKey("CRUD.Business.Models.Endereco", "FornecedorId")
+                        .HasForeignKey("ProductManagement.Business.Models.Endereco", "FornecedorId")
                         .IsRequired();
 
                     b.Navigation("Fornecedor");
                 });
 
-            modelBuilder.Entity("CRUD.Business.Models.Produto", b =>
+            modelBuilder.Entity("ProductManagement.Business.Models.Produto", b =>
                 {
-                    b.HasOne("CRUD.Business.Models.Fornecedor", "Fornecedor")
+                    b.HasOne("ProductManagement.Business.Models.Fornecedor", "Fornecedor")
                         .WithMany("Produtos")
                         .HasForeignKey("FornecedorId")
                         .IsRequired();
@@ -164,7 +164,7 @@ namespace CRUD.Data.Migrations
                     b.Navigation("Fornecedor");
                 });
 
-            modelBuilder.Entity("CRUD.Business.Models.Fornecedor", b =>
+            modelBuilder.Entity("ProductManagement.Business.Models.Fornecedor", b =>
                 {
                     b.Navigation("Endereco");
 

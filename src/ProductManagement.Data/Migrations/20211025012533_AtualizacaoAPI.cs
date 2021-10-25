@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CRUD.Data.Migrations
+namespace ProductManagement.Data.Migrations
 {
-    public partial class _001Infra : Migration
+    public partial class AtualizacaoAPI : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
