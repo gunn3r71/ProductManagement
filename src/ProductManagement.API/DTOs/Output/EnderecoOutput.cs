@@ -2,6 +2,7 @@
 {
     public class EnderecoOutput
     {
+        public string Id { get; set; }
         public string Logradouro { get; set; }
         public int Numero { get; set; }
         public string Complemento { get; set; }
