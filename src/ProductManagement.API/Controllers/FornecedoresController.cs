@@ -49,7 +49,9 @@ namespace ProductManagement.API.Controllers
 
             var fornecedor = _mapper.Map<Fornecedor>(fornecedorModel);
 
-            await _fornecedorService.Adicionar(fornecedor);
+            var result = await _fornecedorService.Adicionar(fornecedor);
+
+            if (!result) return BadRequest();
 
             return CreatedAtRoute(nameof(GetById), new { Id = fornecedor.Id }, fornecedorModel);
         }
@@ -60,7 +62,9 @@ namespace ProductManagement.API.Controllers
             if (id != fornecedorModel.Id) return BadRequest();
 
             var fornecedor = _mapper.Map<Fornecedor>(fornecedorModel);
-            await _fornecedorService.Atualizar(fornecedor);
+            var result = await _fornecedorService.Atualizar(fornecedor);
+
+            if (!result) return BadRequest();
 
             return NoContent();
         }
@@ -68,8 +72,10 @@ namespace ProductManagement.API.Controllers
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Remove(Guid id)
         {
-            await _fornecedorRepository.Remover(id);
-            
+            var result = await _fornecedorService.Remover(id);
+
+            if (!result) return BadRequest();
+
             return NoContent();
         }
 
