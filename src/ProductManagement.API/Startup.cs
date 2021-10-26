@@ -68,6 +68,8 @@ namespace ProductManagement.API
 
             app.UseRouting();
 
+            //app.UseInternalServerErrorInterceptor();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
