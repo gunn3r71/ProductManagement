@@ -18,7 +18,11 @@ namespace ProductManagement.API.Controllers
         private readonly IFornecedorService _fornecedorService;
         private readonly IMapper _mapper;
 
-        public FornecedoresController(IFornecedorService fornecedorService, IFornecedorRepository fornecedorRepository, IMapper mapper)
+        public FornecedoresController(IFornecedorService fornecedorService,
+                                      IFornecedorRepository fornecedorRepository,
+                                      IMapper mapper,
+                                      INotificador notificador)
+            : base(notificador)
         {
             _fornecedorService = fornecedorService;
             _fornecedorRepository = fornecedorRepository;
@@ -45,13 +49,13 @@ namespace ProductManagement.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateFornecedor fornecedorModel)
         {
-            if (!ModelState.IsValid) return BadRequest();
+            if (!ModelState.IsValid) return CustomErrorResponse(ModelState);
 
             var fornecedor = _mapper.Map<Fornecedor>(fornecedorModel);
 
             var result = await _fornecedorService.Adicionar(fornecedor);
 
-            if (!result) return BadRequest();
+            if (!result) return CustomErrorResponse(ModelState);
 
             return CreatedAtRoute(nameof(GetById), new { Id = fornecedor.Id }, fornecedorModel);
         }
@@ -59,12 +63,12 @@ namespace ProductManagement.API.Controllers
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(Guid id,[FromBody] UpdateFornecedor fornecedorModel)
         {
-            if (id != fornecedorModel.Id) return BadRequest();
+            if (id != fornecedorModel.Id) return CustomErrorResponse("Os id's fornecidos são diferentes.");
 
             var fornecedor = _mapper.Map<Fornecedor>(fornecedorModel);
             var result = await _fornecedorService.Atualizar(fornecedor);
 
-            if (!result) return BadRequest();
+            if (!result) return CustomErrorResponse(ModelState);
 
             return NoContent();
         }
@@ -74,7 +78,7 @@ namespace ProductManagement.API.Controllers
         {
             var result = await _fornecedorService.Remover(id);
 
-            if (!result) return BadRequest();
+            if (!result) return CustomErrorResponse(ModelState);
 
             return NoContent();
         }

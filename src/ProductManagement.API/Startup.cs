@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,11 +40,16 @@ namespace ProductManagement.API
                 options.UseSqlServer(connectionString);
             });
 
-            services.ConfigureDependencies();
-
             services.AddControllers();
 
             services.AddAutoMapper(typeof(Startup));
+
+            services.Configure<ApiBehaviorOptions>(o =>
+            {
+                o.SuppressModelStateInvalidFilter = true;
+            });
+
+            services.ConfigureDependencies();
 
             services.ConfigureSwagger();
         }
