@@ -40,8 +40,6 @@ namespace ProductManagement.API
                 options.UseSqlServer(connectionString);
             });
 
-            services.AddControllers();
-
             services.AddAutoMapper(typeof(Startup));
 
             services.Configure<ApiBehaviorOptions>(o =>
@@ -52,6 +50,8 @@ namespace ProductManagement.API
             services.ConfigureDependencies();
 
             services.ConfigureSwagger();
+
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,6 +69,8 @@ namespace ProductManagement.API
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseLogger(Configuration);
 
             app.UseErrorHandling();
 
