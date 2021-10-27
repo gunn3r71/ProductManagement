@@ -45,7 +45,13 @@ namespace ProductManagement.Business.Services
                 return false;
             }
 
-            await _fornecedorRepository.Atualizar(fornecedor);
+            var fornecedorUpdate = await _fornecedorRepository.ObterPorId(fornecedor.Id);
+
+            fornecedorUpdate.Nome = fornecedor.Nome;
+            fornecedorUpdate.Documento = fornecedor.Documento;
+            fornecedorUpdate.TipoFornecedor = fornecedor.TipoFornecedor;
+
+            await _fornecedorRepository.Atualizar(fornecedorUpdate);
             return true;
         }
 
@@ -61,11 +67,23 @@ namespace ProductManagement.Business.Services
             return true;
         }
 
-        public async Task AtualizarEndereco(Endereco endereco)
+        public async Task<bool> AtualizarEndereco(Endereco endereco)
         {
-            if (!ExecutarValidacao(new EnderecoValidation(), endereco)) return;
+            if (!ExecutarValidacao(new EnderecoValidation(), endereco)) return false;
 
-            await _enderecoRepository.Atualizar(endereco);
+            var fornecedor = await _fornecedorRepository.ObterFornecedorEndereco(endereco.FornecedorId);
+
+            fornecedor.Endereco.Logradouro = endereco.Logradouro;
+            fornecedor.Endereco.Numero = endereco.Numero;
+            fornecedor.Endereco.Complemento = endereco.Complemento;
+            fornecedor.Endereco.Cep = endereco.Cep;
+            fornecedor.Endereco.Bairro = endereco.Bairro;
+            fornecedor.Endereco.Cidade = endereco.Cidade;
+            fornecedor.Endereco.Estado = endereco.Estado;
+
+            await _enderecoRepository.Atualizar(fornecedor.Endereco);
+
+            return true;
         }
 
         public void Dispose()
