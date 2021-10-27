@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProductManagement.API.DTOs.Input;
 using ProductManagement.API.DTOs.Output;
+using ProductManagement.API.Filters;
 using ProductManagement.Business.Interfaces;
 using ProductManagement.Business.Models;
 using System;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 namespace ProductManagement.API.Controllers
 {
     [Route("api/v1/[controller]")]
+    [ServiceFilter(typeof(ApiLoggingFilter))]
     public class FornecedoresController : BaseController
     {
         private readonly IFornecedorRepository _fornecedorRepository;
@@ -98,6 +100,7 @@ namespace ProductManagement.API.Controllers
         }
 
         [HttpPut("{id:guid}")]
+        [ServiceFilter(typeof(ApiLoggingFilter))]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateFornecedor fornecedorModel)
         {
             try

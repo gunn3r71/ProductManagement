@@ -2,6 +2,7 @@
 using KissLog.AspNetCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using ProductManagement.API.Filters;
 using ProductManagement.Business.Interfaces;
 using ProductManagement.Business.Notifications;
 using ProductManagement.Business.Services;
@@ -25,6 +26,9 @@ namespace ProductManagement.API.Extensions
             {
                 logging.AddKissLog();
             });
+
+            services.AddScoped<ApiLoggingFilter>();
+
             services.AddScoped<IFornecedorRepository, FornecedorRepository>();
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
             services.AddScoped<IEnderecoRepository, EnderecoRepository>();
