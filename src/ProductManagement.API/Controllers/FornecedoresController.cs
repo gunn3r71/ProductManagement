@@ -7,6 +7,7 @@ using ProductManagement.Business.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace ProductManagement.API.Controllers
@@ -61,7 +62,7 @@ namespace ProductManagement.API.Controllers
         }
 
         [HttpPut("{id:guid}")]
-        public async Task<IActionResult> Update(Guid id,[FromBody] UpdateFornecedor fornecedorModel)
+        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateFornecedor fornecedorModel)
         {
             if (id != fornecedorModel.Id) return CustomErrorResponse("Os id's fornecidos são diferentes.");
 
