@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace ProductManagement.API.Extensions
 {
-    public static class CustomMiddlewareCOnfig
+    public static class ExceptionMiddlewareConfig
     {
         public static IApplicationBuilder UseErrorHandling(this IApplicationBuilder app)
         {
