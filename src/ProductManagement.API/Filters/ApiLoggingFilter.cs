@@ -15,14 +15,16 @@ namespace ProductManagement.API.Filters
 
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            _logger.LogInformation($"Executing {context.ActionDescriptor.DisplayName}");
         }
 
         public void OnActionExecuted(ActionExecutedContext context)
         {
-            if (context.HttpContext.Response.StatusCode is StatusCodes.Status500InternalServerError)
-                _logger.LogError($"{context.Exception.Message}");
-            _logger.LogInformation($"Executed {context.ActionDescriptor.DisplayName}");
+            if (context.Exception is not null)
+            {
+                _logger.LogError($"StackTrace: {context.Exception.StackTrace} \n" +
+                                 $"Error Message: {context.Exception.Message} \n" +
+                                 $"Inner Exception: {context.Exception.InnerException}");
+            }
         }
     }
 }
