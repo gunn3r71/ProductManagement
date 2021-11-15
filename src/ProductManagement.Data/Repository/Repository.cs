@@ -41,7 +41,7 @@ namespace ProductManagement.Data.Repository
 
         public virtual async Task<T> ObterPorId(Guid id)
         {
-            return await _dbEntity.FindAsync(id);
+            return await _dbEntity.SingleOrDefaultAsync(x => x.Id == id);
         }
 
         public virtual async Task<IList<T>> ObterTodos()

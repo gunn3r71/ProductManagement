@@ -33,6 +33,8 @@ namespace ProductManagement.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
+
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
 
             services.AddDbContext<AppDbContext>(options =>
@@ -73,6 +75,13 @@ namespace ProductManagement.API
             app.UseLogger(Configuration);
 
             app.UseErrorHandling();
+
+            app.UseCors(x =>
+            {
+                x.AllowAnyHeader();
+                x.AllowAnyOrigin();
+                x.AllowAnyMethod();
+            });
 
             app.UseEndpoints(endpoints =>
             {
