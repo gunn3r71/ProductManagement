@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProductManagement.API.DTOs.Input;
 using ProductManagement.API.DTOs.Output;
@@ -57,12 +58,13 @@ namespace ProductManagement.API.Controllers
             return Ok(_mapper.Map<ProdutoFornecedorOutput>(produto));
         }
 
+        [RequestSizeLimit(25000)]
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] CreateProduto produtoModel)
+        public async Task<IActionResult> Add(CreateProduto produtoModel)
         {
             if (!ModelState.IsValid) return CustomErrorResponse(ModelState);
 
-            var imgName = Guid.NewGuid() + $"_{produtoModel.Imagem}";
+            var imgName = Guid.NewGuid() + produtoModel.ImagemUrl.FileName; 
 
             if (!await UploadArquivo(produtoModel.ImagemUrl, imgName)) return CustomErrorResponse();
 
@@ -87,11 +89,9 @@ namespace ProductManagement.API.Controllers
             return NoContent();
         }
 
-        private async Task<bool> UploadArquivo(string arquivo, string nomeArquivo)
+        private async Task<bool> UploadArquivo(IFormFile arquivo, string nomeArquivo)
         {
-            var imagemDataByteArray = Convert.FromBase64String(arquivo);
-
-            if (string.IsNullOrWhiteSpace(arquivo) || arquivo.Length is 0)
+            if (arquivo is null || arquivo is { Length: 0})
             {
                 NotifyError("Forneça uma imagem para o produto.");
                 return false;
@@ -105,7 +105,10 @@ namespace ProductManagement.API.Controllers
                 return false;
             }
 
-            await System.IO.File.WriteAllBytesAsync(filePath, imagemDataByteArray);
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await arquivo.CopyToAsync(stream);
+            }
 
             return true;
         }
