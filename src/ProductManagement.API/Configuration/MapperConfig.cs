@@ -21,6 +21,7 @@ namespace ProductManagement.API.Configuration
             CreateMap<CreateEndereco, Endereco>();
             CreateMap<CreateProduto, Produto>();
 
+            CreateMap<UpdateProduto, Produto>();
             CreateMap<UpdateFornecedor, Fornecedor>();
             CreateMap<UpdateEndereco, Endereco>();
         }
