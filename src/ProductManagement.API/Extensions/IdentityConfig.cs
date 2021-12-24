@@ -12,11 +12,15 @@ namespace ProductManagement.API.Extensions
             IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
-            
+
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(connectionString);
             });
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             return services;
         }

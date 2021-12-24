@@ -71,6 +71,7 @@ namespace ProductManagement.API
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseLogger(Configuration);
