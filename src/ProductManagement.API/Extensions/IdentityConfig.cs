@@ -18,7 +18,21 @@ namespace ProductManagement.API.Extensions
                 options.UseSqlServer(connectionString);
             });
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<IdentityUser, IdentityRole>(x =>
+                {
+                    x.Password = new()
+                    {
+                        RequireDigit = true,
+                        RequireLowercase = true,
+                        RequireUppercase = true,
+                        RequiredLength = 8,
+                        RequireNonAlphanumeric = true
+                    };
+                    x.User = new()
+                    {
+                        RequireUniqueEmail = true,
+                    };
+                })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
