@@ -4,11 +4,11 @@ using Microsoft.Extensions.Logging;
 
 namespace ProductManagement.API.Filters
 {
-    public class ApiLoggingFilter : IActionFilter
+    public class ApiLogFilter : IActionFilter
     {
-        private readonly ILogger<ApiLoggingFilter> _logger;
+        private readonly ILogger<ApiLogFilter> _logger;
 
-        public ApiLoggingFilter(ILogger<ApiLoggingFilter> logger)
+        public ApiLogFilter(ILogger<ApiLogFilter> logger)
         {
             _logger = logger;
         }

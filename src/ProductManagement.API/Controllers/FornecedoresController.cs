@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 namespace ProductManagement.API.Controllers
 {
     [Route("api/v1/[controller]")]
-    [ServiceFilter(typeof(ApiLoggingFilter))]
     public class FornecedoresController : BaseController
     {
         private readonly IFornecedorRepository _fornecedorRepository;

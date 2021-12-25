@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 namespace ProductManagement.API.Controllers
 {
     [Route("api/v1/[controller]")]
-    [ServiceFilter(typeof(ApiLoggingFilter))]
     public class ProdutosController : BaseController
     {
         private readonly IProdutoRepository _produtoRepository;

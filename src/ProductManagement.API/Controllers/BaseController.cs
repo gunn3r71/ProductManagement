@@ -4,10 +4,12 @@ using ProductManagement.API.DTOs.Output;
 using ProductManagement.Business.Interfaces;
 using ProductManagement.Business.Notifications;
 using System.Linq;
+using ProductManagement.API.Filters;
 
 namespace ProductManagement.API.Controllers
 {
     [ApiController]
+    [ServiceFilter(typeof(ApiLogFilter))]
     public abstract class BaseController : ControllerBase
     {
 

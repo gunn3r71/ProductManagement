@@ -27,7 +27,7 @@ namespace ProductManagement.API.Extensions
                 logging.AddKissLog();
             });
 
-            services.AddScoped<ApiLoggingFilter>();
+            services.AddScoped<ApiLogFilter>();
 
             services.AddScoped<IFornecedorRepository, FornecedorRepository>();
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
