@@ -33,10 +33,59 @@ namespace ProductManagement.API.Extensions
                         RequireUniqueEmail = true,
                     };
                 })
+                .AddErrorDescriber<MessagesConfig>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
             return services;
+        }
+
+        public class MessagesConfig : IdentityErrorDescriber
+        {
+            public override IdentityError DefaultError()
+            {
+                return new()
+                {
+                    Code = nameof(DefaultError),
+                    Description = "Ocorreu um erro desconhecido."
+                };
+            }
+
+            public override IdentityError ConcurrencyFailure()
+            {
+                return new()
+                {
+                    Code = nameof(ConcurrencyFailure),
+                    Description = "O objeto foi alterado."
+                };
+            }
+
+            public override IdentityError DuplicateEmail(string email)
+            {
+                return new()
+                {
+                    Code = nameof(DuplicateEmail),
+                    Description = $"O email {email} já existe."
+                };
+            }
+
+            public override IdentityError DuplicateRoleName(string role)
+            {
+                return new()
+                {
+                    Code = nameof(DuplicateRoleName),
+                    Description = $"O nível {role} já existe."
+                };
+            }
+
+            public override IdentityError DuplicateUserName(string userName)
+            {
+                return new()
+                {
+                    Code = nameof(DuplicateUserName),
+                    Description = $"O usuário {userName} já existe."
+                };
+            }
         }
     }
 }
