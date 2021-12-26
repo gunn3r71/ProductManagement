@@ -163,7 +163,7 @@ namespace ProductManagement.API.Extensions
             {
                 return new()
                 {
-                    Code = nameof(PasswordTooShort),
+                    Code = nameof(PasswordRequiresLower),
                     Description = "A senha deve conter um caractere em maíusculo."
                 };
             }
@@ -181,7 +181,7 @@ namespace ProductManagement.API.Extensions
             {
                 return new()
                 {
-                    Code = nameof(PasswordRequiresNonAlphanumeric),
+                    Code = nameof(PasswordRequiresUniqueChars),
                     Description = $"A senha deve conter {uniqueChars} caracteres especiais."
                 };
             }
