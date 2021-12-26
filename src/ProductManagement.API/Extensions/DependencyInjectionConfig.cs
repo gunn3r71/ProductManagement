@@ -17,10 +17,7 @@ namespace ProductManagement.API.Extensions
         {
 
             services.AddScoped<AppDbContext>(); ;
-            services.AddScoped<ILogger>((context) =>
-            {
-                return Logger.Factory.Get();
-            });
+            services.AddScoped<ILogger>((context) => Logger.Factory.Get());
 
             services.AddLogging(logging =>
             {

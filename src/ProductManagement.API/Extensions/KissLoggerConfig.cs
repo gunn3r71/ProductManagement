@@ -1,11 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using KissLog;
-using KissLog.AspNetCore;
+﻿using KissLog.AspNetCore;
 using KissLog.CloudListeners.Auth;
 using KissLog.CloudListeners.RequestLogsListener;
-using System.Diagnostics;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using System.Diagnostics;
 
 namespace ProductManagement.API.Extensions
 {
