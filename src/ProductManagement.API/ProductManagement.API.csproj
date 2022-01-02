@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Security\Filters\" />
     <Folder Include="wwwroot\imagens" />
   </ItemGroup>
 

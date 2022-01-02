@@ -3,15 +3,17 @@ using KissLog;
 using Microsoft.AspNetCore.Mvc;
 using ProductManagement.API.DTOs.Input;
 using ProductManagement.API.DTOs.Output;
-using ProductManagement.API.Filters;
 using ProductManagement.Business.Interfaces;
 using ProductManagement.Business.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using ProductManagement.API.Security.Filters;
 
 namespace ProductManagement.API.Controllers
 {
+    [Authorize]
     [Route("api/v1/[controller]")]
     public class FornecedoresController : BaseController
     {
@@ -32,7 +34,7 @@ namespace ProductManagement.API.Controllers
             _mapper = mapper;
             _logger = logger;
         }
-
+        
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -40,7 +42,7 @@ namespace ProductManagement.API.Controllers
 
             return Ok(_mapper.Map<IEnumerable<FornecedorOutput>>(fornecedores));
         }
-
+        
         [HttpGet("{id:guid}", Name = nameof(GetById))]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
@@ -50,6 +52,7 @@ namespace ProductManagement.API.Controllers
             return Ok(_mapper.Map<FornecedorEnderecoProdutosOutput>(fornecedor));
         }
 
+        [ClaimsAuthorize("Fornecedor", "Adicionar")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateFornecedor fornecedorModel)
         {
@@ -64,6 +67,7 @@ namespace ProductManagement.API.Controllers
             return CreatedAtRoute(nameof(GetById), new { Id = fornecedor.Id }, fornecedorModel);
         }
 
+        [ClaimsAuthorize("Fornecedor", "Atualizar")]
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateFornecedor fornecedorModel)
         {
@@ -77,6 +81,7 @@ namespace ProductManagement.API.Controllers
             return NoContent();
         }
 
+        [ClaimsAuthorize("Fornecedor", "Atualizar")]
         [HttpPut("{fornecedorId:guid}/endereco")]
         public async Task<IActionResult> UpdateAddress(Guid fornecedorId, [FromBody] UpdateEndereco enderecoModel)
         {
@@ -90,7 +95,7 @@ namespace ProductManagement.API.Controllers
             return NoContent();
         }
 
-
+        [ClaimsAuthorize("Fornecedor", "Remover")]
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> Remove(Guid id)
         {

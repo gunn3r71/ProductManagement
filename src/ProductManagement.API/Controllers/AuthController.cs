@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using ProductManagement.API.DTOs.Input;
-using ProductManagement.Business.Interfaces;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using ProductManagement.API.DTOs.Input;
 using ProductManagement.API.Extensions;
 using ProductManagement.API.Security;
+using ProductManagement.Business.Interfaces;
+using System.Threading.Tasks;
 
 namespace ProductManagement.API.Controllers
 {
