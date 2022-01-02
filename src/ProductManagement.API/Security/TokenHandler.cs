@@ -19,6 +19,7 @@ namespace ProductManagement.API.Security
         {
             var handler = new JwtSecurityTokenHandler();
 
+            Console.WriteLine(DateTime.UtcNow.AddHours(-3));
 
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
             var token = handler.CreateToken(new SecurityTokenDescriptor()
@@ -27,8 +28,8 @@ namespace ProductManagement.API.Security
                 Audience = _jwtSettings.Audience,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256),
                 IssuedAt = DateTime.UtcNow.AddHours(-3),
-                Expires = DateTime.UtcNow.AddHours(_jwtSettings.Expires - 3),
-                NotBefore = DateTime.UtcNow.AddHours(-3)
+                Expires = DateTime.UtcNow.AddHours(-3).AddHours(_jwtSettings.Expires),
+                NotBefore = DateTime.UtcNow.AddHours(-3),
             });
 
             return handler.WriteToken(token);

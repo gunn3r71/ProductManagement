@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace ProductManagement.API.Extensions
 {
@@ -22,6 +24,33 @@ namespace ProductManagement.API.Extensions
                     },
                     Description = "API criada para gerenciamento de produtos e fornecedores com base no projeto" +
                     $"do curso: REST com ASP.NET Core WebAPI no {new Uri("https://desenvolvedor.io/")}"
+                });
+
+                c.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = JwtBearerDefaults.AuthenticationScheme,
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header utilizando o esquema bearer. \r\n" +
+                                  "Insira 'Bearer' [espaço] e insira seu token depois.\r\n\r\n" +
+                                  "Exemplo: \"Bearer 15asda1d5ad3as12dasd-f\""
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme()
+                        {
+                            Reference = new OpenApiReference()
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = JwtBearerDefaults.AuthenticationScheme
+                            }
+                        },
+                        new List<string>()
+                    }                    
                 });
             });
 
