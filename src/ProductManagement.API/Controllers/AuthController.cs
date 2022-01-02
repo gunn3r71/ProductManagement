@@ -3,6 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using ProductManagement.API.DTOs.Input;
 using ProductManagement.Business.Interfaces;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using ProductManagement.API.Extensions;
+using ProductManagement.API.Security;
 
 namespace ProductManagement.API.Controllers
 {
@@ -11,13 +15,16 @@ namespace ProductManagement.API.Controllers
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly JwtSettings _configuration;
 
         public AuthController(INotificador notificador,
                               UserManager<IdentityUser> userManager,
-                              SignInManager<IdentityUser> signInManager) : base(notificador)
+                              SignInManager<IdentityUser> signInManager, 
+                              IOptions<JwtSettings> configuration) : base(notificador)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _configuration = configuration.Value;
         }
 
         [HttpPost("register")]
@@ -37,7 +44,9 @@ namespace ProductManagement.API.Controllers
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, false);
-                return Ok(registerUser);
+                var tokenHandler = new TokenHandler(_configuration);
+
+                return Ok(tokenHandler.GenerateToken());
             }
 
             foreach (var error in result.Errors)
@@ -54,7 +63,10 @@ namespace ProductManagement.API.Controllers
             var result = await _signInManager.PasswordSignInAsync(login.Email, login.Senha, false, true);
 
             if (result.Succeeded)
-                return Ok(login);
+            {
+                var tokenHandler = new TokenHandler(_configuration);
+                return Ok(tokenHandler.GenerateToken());
+            }
 
             if (result.IsLockedOut)
             {
