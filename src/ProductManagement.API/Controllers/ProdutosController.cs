@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProductManagement.API.DTOs.Input;
 using ProductManagement.API.DTOs.Output;
-using ProductManagement.API.Filters;
 using ProductManagement.Business.Interfaces;
 using ProductManagement.Business.Models;
 using System;
@@ -36,7 +35,12 @@ namespace ProductManagement.API.Controllers
         {
             var produtos = await _produtoRepository.ObterProdutosFornecedores();
 
-            return Ok(_mapper.Map<IEnumerable<ProdutoFornecedorOutput>>(produtos));
+            return Ok(new CustomResponseOutput
+            {
+                Success = true,
+                Message = "Sucesso",
+                Data = _mapper.Map<IEnumerable<ProdutoFornecedorOutput>>(produtos)
+            });
         }
 
         [HttpGet("fornecedor/{fornecedorId:guid}")]
@@ -44,7 +48,12 @@ namespace ProductManagement.API.Controllers
         {
             var produtos = await _produtoRepository.ObterProdutosPorFornecedor(fornecedorId);
 
-            return Ok(_mapper.Map<IEnumerable<ProdutoOutput>>(produtos));
+            return Ok(new CustomResponseOutput
+            {
+                Success = true,
+                Message = "Sucesso",
+                Data = _mapper.Map<IEnumerable<ProdutoOutput>>(produtos)
+            });
         }
 
         [HttpGet("{id:guid}")]
@@ -52,9 +61,19 @@ namespace ProductManagement.API.Controllers
         {
             var produto = await GetProduto(id);
 
-            if (produto is null) return NotFound();
+            if (produto is null) return NotFound(new CustomResponseOutput
+            {
+                Success = false,
+                Message = "produto não foi encontrado.",
+                Data = null
+            });
 
-            return Ok(_mapper.Map<ProdutoFornecedorOutput>(produto));
+            return Ok(new CustomResponseOutput
+            {
+                Success = true,
+                Message = "Sucesso",
+                Data = _mapper.Map<ProdutoFornecedorOutput>(produto)
+            });
         }
 
         [RequestSizeLimit(25000)]
@@ -63,7 +82,7 @@ namespace ProductManagement.API.Controllers
         {
             if (!ModelState.IsValid) return CustomErrorResponse(ModelState);
 
-            var imgName = Guid.NewGuid() + produtoModel.ImagemUrl.FileName; 
+            var imgName = Guid.NewGuid() + produtoModel.ImagemUrl.FileName;
 
             if (!await UploadArquivo(produtoModel.ImagemUrl, imgName)) return CustomErrorResponse();
 
@@ -73,14 +92,14 @@ namespace ProductManagement.API.Controllers
 
             await _produtoService.Adicionar(produto);
 
-            return CreatedAtRoute("",new { Id = produto.Id}, produto);
+            return CreatedAtRoute("", new { Id = produto.Id }, produto);
         }
 
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> Update(Guid id, UpdateProduto updateProduto)
         {
             if (id != updateProduto.Id) return CustomErrorResponse("Os Id's informados são ");
-            
+
             var produtoAtualizacao = await GetProduto(id);
             updateProduto.Imagem = produtoAtualizacao.Imagem;
 
@@ -119,7 +138,7 @@ namespace ProductManagement.API.Controllers
 
         private async Task<bool> UploadArquivo(IFormFile arquivo, string nomeArquivo)
         {
-            if (arquivo is null || arquivo is { Length: 0})
+            if (arquivo is null || arquivo is { Length: 0 })
             {
                 NotifyError("Forneça uma imagem para o produto.");
                 return false;

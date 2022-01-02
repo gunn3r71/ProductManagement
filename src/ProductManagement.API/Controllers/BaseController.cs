@@ -4,10 +4,12 @@ using ProductManagement.API.DTOs.Output;
 using ProductManagement.Business.Interfaces;
 using ProductManagement.Business.Notifications;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using ProductManagement.API.Filters;
 
 namespace ProductManagement.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [ServiceFilter(typeof(ApiLogFilter))]
     public abstract class BaseController : ControllerBase
@@ -38,9 +40,14 @@ namespace ProductManagement.API.Controllers
 
         protected ActionResult CustomErrorResponse()
         {
-            return BadRequest(new ErrorOutput
+            return BadRequest(new CustomResponseOutput
             {
-                Errors = _notificador.ObterNotificacoes()
+                Success = false,
+                Message = "Ocorreram um ou mais erros em sua solicitação",
+                Data = new ErrorOutput
+                {
+                    Errors = _notificador.ObterNotificacoes()
+                }
             });
         }   
 

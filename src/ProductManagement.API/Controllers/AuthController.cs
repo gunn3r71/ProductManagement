@@ -6,6 +6,8 @@ using ProductManagement.API.Extensions;
 using ProductManagement.API.Security;
 using ProductManagement.Business.Interfaces;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using ProductManagement.API.DTOs.Output;
 
 namespace ProductManagement.API.Controllers
 {
@@ -43,17 +45,23 @@ namespace ProductManagement.API.Controllers
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, false);
-                var tokenHandler = new TokenHandler(_configuration);
+                var tokenHandler = new TokenHandler(_configuration, _userManager);
 
-                return Ok(tokenHandler.GenerateToken());
+                return Ok(new CustomResponseOutput
+                {
+                    Success = true,
+                    Message = "Registro realizado com sucesso.",
+                    Data = await tokenHandler.GenerateTokenAsync(registerUser.Email)
+                });
             }
 
             foreach (var error in result.Errors)
                 NotifyError(error.Description);
 
-            return BadRequest(registerUser);
+            return CustomErrorResponse();
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginUser login)
         {
@@ -63,18 +71,23 @@ namespace ProductManagement.API.Controllers
 
             if (result.Succeeded)
             {
-                var tokenHandler = new TokenHandler(_configuration);
-                return Ok(tokenHandler.GenerateToken());
+                var tokenHandler = new TokenHandler(_configuration, _userManager);
+                return Ok(new CustomResponseOutput
+                {
+                    Success = true,
+                    Message = "Login realizado com sucesso.",
+                    Data = await tokenHandler.GenerateTokenAsync(login.Email)
+                });
             }
 
             if (result.IsLockedOut)
             {
                 NotifyError("Usuário temporariamente bloqueado por tentativas inválidas");
-                return BadRequest(login);
+                return CustomErrorResponse();
             }
 
             NotifyError("Usuário ou senha incorretos");
-            return BadRequest(login);
+            return CustomErrorResponse();
         }
     }
 }

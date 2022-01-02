@@ -13,7 +13,6 @@ using ProductManagement.API.Security.Filters;
 
 namespace ProductManagement.API.Controllers
 {
-    [Authorize]
     [Route("api/v1/[controller]")]
     public class FornecedoresController : BaseController
     {
@@ -40,16 +39,31 @@ namespace ProductManagement.API.Controllers
         {
             var fornecedores = await _fornecedorRepository.ObterTodos();
 
-            return Ok(_mapper.Map<IEnumerable<FornecedorOutput>>(fornecedores));
+            return Ok(new CustomResponseOutput
+            {
+                Success = true,
+                Message = "Sucesso",
+                Data = _mapper.Map<IEnumerable<FornecedorOutput>>(fornecedores)
+            });
         }
         
         [HttpGet("{id:guid}", Name = nameof(GetById))]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var fornecedor = await GetProviderWithAddressAndProductsAsync(id);
-            if (fornecedor is null) return NotFound();
+            if (fornecedor is null) return NotFound(new CustomResponseOutput
+            {
+                Success = false,
+                Message = "Fornecedor não foi encontrado.",
+                Data = null
+            });
 
-            return Ok(_mapper.Map<FornecedorEnderecoProdutosOutput>(fornecedor));
+            return Ok(new CustomResponseOutput
+            {
+                Success = true,
+                Message = "Sucesso",
+                Data = _mapper.Map<FornecedorEnderecoProdutosOutput>(fornecedor)
+            });
         }
 
         [ClaimsAuthorize("Fornecedor", "Adicionar")]
@@ -64,7 +78,12 @@ namespace ProductManagement.API.Controllers
 
             if (!result) return CustomErrorResponse(ModelState);
 
-            return CreatedAtRoute(nameof(GetById), new { Id = fornecedor.Id }, fornecedorModel);
+            return CreatedAtRoute(nameof(GetById), new { Id = fornecedor.Id }, new CustomResponseOutput
+            {
+                Success = true,
+                Message = "Fornecedor criado com sucesso",
+                Data = null
+            });
         }
 
         [ClaimsAuthorize("Fornecedor", "Atualizar")]
