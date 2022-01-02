@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using ProductManagement.API.DTOs.Output;
-using System.Collections.Generic;
 
 namespace ProductManagement.API.Extensions
 {
@@ -21,12 +20,13 @@ namespace ProductManagement.API.Extensions
 
                     if (exceptionObject is not null)
                     {
-                        var message = JsonConvert.SerializeObject(new ErrorOutput
+                        var message = JsonConvert.SerializeObject(new CustomResponseOutput()
                         {
-                            Errors = new List<string>{
-                                "Ocorreu um erro ao processar sua solicitação. Por favor, tente mais tarde!"
-                            }
+                            Success = false,
+                            Message = "Algo deu errado ao processar sua solicitação =(",
+                            Data = null
                         });
+
                         await context.Response.WriteAsync(message);
                     }
                 });
