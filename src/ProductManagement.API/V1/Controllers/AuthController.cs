@@ -1,17 +1,19 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using ProductManagement.API.Controllers;
 using ProductManagement.API.DTOs.Input;
+using ProductManagement.API.DTOs.Output;
 using ProductManagement.API.Extensions;
 using ProductManagement.API.Security;
 using ProductManagement.Business.Interfaces;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using ProductManagement.API.DTOs.Output;
 
-namespace ProductManagement.API.Controllers
+namespace ProductManagement.API.V1.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class AuthController : BaseController
     {
         private readonly SignInManager<IdentityUser> _signInManager;

@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System;
+using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using ProductManagement.API.DTOs.Output;
 using ProductManagement.API.Filters;
 using ProductManagement.Business.Interfaces;
 using ProductManagement.Business.Notifications;
-using System;
-using System.Linq;
 
 namespace ProductManagement.API.Controllers
 {

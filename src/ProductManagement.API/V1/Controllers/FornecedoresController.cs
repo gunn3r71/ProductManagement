@@ -1,19 +1,20 @@
-﻿using AutoMapper;
-using KissLog;
-using Microsoft.AspNetCore.Mvc;
-using ProductManagement.API.DTOs.Input;
-using ProductManagement.API.DTOs.Output;
-using ProductManagement.Business.Interfaces;
-using ProductManagement.Business.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+using AutoMapper;
+using KissLog;
+using Microsoft.AspNetCore.Mvc;
+using ProductManagement.API.Controllers;
+using ProductManagement.API.DTOs.Input;
+using ProductManagement.API.DTOs.Output;
 using ProductManagement.API.Security.Filters;
+using ProductManagement.Business.Interfaces;
+using ProductManagement.Business.Models;
 
-namespace ProductManagement.API.Controllers
+namespace ProductManagement.API.V1.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class FornecedoresController : BaseController
     {
         private readonly IFornecedorRepository _fornecedorRepository;
