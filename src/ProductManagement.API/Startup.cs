@@ -35,23 +35,12 @@ namespace ProductManagement.API
         {
             services.AddCors();
 
-            var connectionString = Configuration.GetConnectionString("DefaultConnection");
-
-            services.AddDbContext<AppDbContext>(options =>
-            {
-                options.UseSqlServer(connectionString);
-            });
-
-            services.AddIdentityConfiguration(Configuration);
-
-            services.AddAutoMapper(typeof(Startup));
-
             services.Configure<ApiBehaviorOptions>(o =>
             {
                 o.SuppressModelStateInvalidFilter = true;
             });
 
-            services.ConfigureDependencies();
+            services.ConfigureDependencies(Configuration);
 
             services.ConfigureSwagger();
 

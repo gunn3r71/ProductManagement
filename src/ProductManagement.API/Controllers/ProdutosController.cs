@@ -20,14 +20,14 @@ namespace ProductManagement.API.Controllers
         private readonly IMapper _mapper;
 
         public ProdutosController(INotificador notificador,
-            IMapper mapper,
+            IUser appUser,
+            IProdutoRepository produtoRepository,
             IProdutoService produtoService,
-            IProdutoRepository produtoRepository)
-            : base(notificador)
+            IMapper mapper) : base(notificador, appUser)
         {
-            _mapper = mapper;
-            _produtoService = produtoService;
             _produtoRepository = produtoRepository;
+            _produtoService = produtoService;
+            _mapper = mapper;
         }
 
         [HttpGet]

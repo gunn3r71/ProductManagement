@@ -21,19 +21,19 @@ namespace ProductManagement.API.Controllers
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
 
-        public FornecedoresController(IFornecedorService fornecedorService,
-                                      IFornecedorRepository fornecedorRepository,
-                                      IMapper mapper,
-                                      INotificador notificador,
-                                      ILogger logger)
-            : base(notificador)
+        public FornecedoresController(INotificador notificador,
+            IUser appUser, 
+            IFornecedorRepository fornecedorRepository,
+            IFornecedorService fornecedorService, 
+            IMapper mapper,
+            ILogger logger) : base(notificador, appUser)
         {
-            _fornecedorService = fornecedorService;
             _fornecedorRepository = fornecedorRepository;
+            _fornecedorService = fornecedorService;
             _mapper = mapper;
             _logger = logger;
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

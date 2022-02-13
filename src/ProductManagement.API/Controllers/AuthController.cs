@@ -18,13 +18,14 @@ namespace ProductManagement.API.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly JwtSettings _configuration;
 
-        public AuthController(INotificador notificador,
-                              UserManager<IdentityUser> userManager,
-                              SignInManager<IdentityUser> signInManager, 
-                              IOptions<JwtSettings> configuration) : base(notificador)
+        public AuthController(INotificador notificador, 
+            IUser appUser,
+            SignInManager<IdentityUser> signInManager, 
+            UserManager<IdentityUser> userManager,
+            IOptions<JwtSettings> configuration) : base(notificador, appUser)
         {
-            _userManager = userManager;
             _signInManager = signInManager;
+            _userManager = userManager;
             _configuration = configuration.Value;
         }
 
