@@ -16,7 +16,10 @@ namespace ProductManagement.API.Extensions
             {
                 options.UseSqlServer(connectionString);
             });
-
+            // BUG -> DOMAIN EXCEPTION
+            // services.AddHealthChecks()
+            //         .AddMySql(connectionString, "MySql database health");
+            
             return services;
         }
     }

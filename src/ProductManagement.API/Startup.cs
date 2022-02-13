@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,34 +33,16 @@ namespace ProductManagement.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-
-            services.Configure<ApiBehaviorOptions>(o =>
-            {
-                o.SuppressModelStateInvalidFilter = true;
-            });
-
+            
             services.ConfigureDependencies(Configuration);
 
             services.ConfigureSwagger();
 
+            services.AddCustomApiConfiguration();
+            
             services.AddControllers();
-
-            services.AddApiVersioning(o =>
-            {
-                o.AssumeDefaultVersionWhenUnspecified = true;
-                o.DefaultApiVersion = new ApiVersion(1, 0);
-                o.ReportApiVersions = true;
-            });
-
-            services.AddVersionedApiExplorer(o =>
-            {
-                o.GroupNameFormat = "'v'VVV";
-                o.SubstituteApiVersionInUrl = true;
-
-            });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -91,6 +74,8 @@ namespace ProductManagement.API
             {
                 endpoints.MapControllers();
             });
+
+            app.UseCustomApiConfiguration();
         }
     }
 }
